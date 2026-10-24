@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f8d9e8">
+<title>给你的生日小惊喜 🎂</title>
+<style>
+:root{--pink:#f5b7d2;--rose:#e889b1;--purple:#9a83cb;--cream:#fff8ed;--ink:#68415d}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:var(--ink);background:radial-gradient(circle at 15% 15%,#fff6db 0 4%,transparent 25%),linear-gradient(145deg,#f8d9e8,#e6ddff 55%,#ffe7d5);overflow-x:hidden}
+main{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.card{width:min(100%,540px);padding:30px 24px 28px;text-align:center;border:1px solid #ffffffa8;border-radius:28px;background:#fffaf0d9;box-shadow:0 20px 60px #93649a25;backdrop-filter:blur(10px);position:relative;overflow:hidden}
+.kicker{font-size:.85rem;letter-spacing:.18em;color:#a875a0}
+h1{font-size:clamp(2rem,7vw,3rem);margin:12px 0;color:#b75d91}
+.subtitle{line-height:1.8;margin:0 auto 18px;max-width:360px}
+.scene{min-height:220px;display:flex;align-items:center;justify-content:center;position:relative}
+.gift{font-size:118px;filter:drop-shadow(0 12px 10px #ba7a9b25);cursor:pointer;user-select:none;transition:transform .3s}
+.gift:hover{transform:translateY(-6px) rotate(-3deg)}
+.cake{font-size:110px;display:none;animation:bob 2s ease-in-out infinite}
+button{border:0;border-radius:999px;padding:13px 22px;font-size:1rem;font-weight:700;cursor:pointer;color:white;background:linear-gradient(100deg,#e78bb7,#9a83cb);box-shadow:0 8px 18px #bd7eae40;margin:6px;transition:transform .2s}
+button:hover{transform:translateY(-2px)}
+button.secondary{color:#965d88;background:#f6e2ef;box-shadow:none}
+.note{display:none;text-align:left;background:#fffdf7;border:1px dashed #e8a9c9;border-radius:20px;padding:20px;margin-top:18px;line-height:1.9;animation:appear .6s ease}
+.note h2{text-align:center;color:#bd6497;margin:0 0 12px}
+.note p{margin:8px 0}
+.footer{font-size:.82rem;opacity:.75;margin-top:20px}
+.spark{position:fixed;top:-30px;pointer-events:none;animation:fall linear forwards;z-index:5}
+.hidden{display:none!important}
+@keyframes fall{to{transform:translateY(110vh) rotate(600deg);opacity:.2}}
+@keyframes appear{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@media(max-width:420px){.card{padding:26px 18px}.scene{min-height:190px}.gift{font-size:100px}}
+</style>
+</head>
+<body>
+<main>
+<section class="card">
+  <div class="kicker">A LITTLE SURPRISE FOR YOU</div>
+  <h1 id="headline">嘿！生日快乐呀 🎂</h1>
+  <p class="subtitle" id="intro">今天有一份小惊喜送给你～<br>点一下礼物盒，查收你的生日祝福吧！</p>
+  <div class="scene">
+    <div class="gift" id="gift" role="button" tabindex="0" aria-label="打开礼物">🎁</div>
+    <div class="cake" id="cake" aria-label="生日蛋糕">🎂</div>
+  </div>
+  <div id="start-actions"><button id="openBtn">拆开小礼物 ✨</button></div>
+  <div id="cake-actions" class="hidden"><button id="blowBtn">吹灭蜡烛 🕯️</button></div>
+  <div id="letter" class="note">
+    <h2>生日快乐呀！💗</h2>
+    <p>恭喜你成功解锁新的一岁 🥳</p>
+    <p>✨ 好运加载中，烦恼自动清零<br>
+    💰 财富持续增长，钱包越来越鼓<br>
+    🍰 想吃的都能吃到，想去的地方都能去<br>
+    🌷 每天开开心心，所有事情都顺顺利利！</p>
+    <p>新的一岁也要继续做快乐的自己！希望接下来的日子有更多惊喜，更多好事发生～</p>
+    <p>好啦，祝你生日快乐！今天最大，开心万岁！🎉</p>
+  </div>
+  <div id="end-actions" class="hidden"><button id="againBtn" class="secondary">再放一次彩带 🎊</button></div>
+  <div class="footer">愿新的一岁，快乐多一点，好运再多一点 ✨</div>
+</section>
+</main>
+<script>
+const gift=document.getElementById('gift'), cake=document.getElementById('cake');
+const startActions=document.getElementById('start-actions'), cakeActions=document.getElementById('cake-actions');
+const letter=document.getElementById('letter'), endActions=document.getElementById('end-actions');
+function confetti(n=48){const symbols=['✨','💗','🎉','⭐','🌸','🎊'];for(let i=0;i<n;i++){const s=document.createElement('span');s.className='spark';s.textContent=symbols[Math.floor(Math.random()*symbols.length)];s.style.left=Math.random()*100+'vw';s.style.animationDuration=(2.4+Math.random()*3)+'s';s.style.fontSize=(14+Math.random()*18)+'px';s.style.animationDelay=(Math.random()*.6)+'s';document.body.appendChild(s);setTimeout(()=>s.remove(),6500)}}
+function openGift(){gift.classList.add('hidden');cake.style.display='block';document.getElementById('headline').textContent='哇！是生日惊喜！';document.getElementById('intro').innerHTML='专属祝福正在送达，请接收满满的好运～';startActions.classList.add('hidden');cakeActions.classList.remove('hidden');confetti(35)}
+document.getElementById('openBtn').addEventListener('click',openGift);gift.addEventListener('click',openGift);gift.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openGift()}});
+document.getElementById('blowBtn').addEventListener('click',()=>{cake.textContent='🍰';document.getElementById('headline').textContent='愿你新的一岁，所愿皆所得！';document.getElementById('intro').textContent='蜡烛吹灭啦，所有美好都慢慢向你靠近。';cakeActions.classList.add('hidden');letter.style.display='block';endActions.classList.remove('hidden');confetti(70)});
+document.getElementById('againBtn').addEventListener('click',()=>confetti(55));
+</script>
+</body>
+</html>
